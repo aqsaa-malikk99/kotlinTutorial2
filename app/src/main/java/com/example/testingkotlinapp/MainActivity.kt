@@ -5,15 +5,21 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,57 +35,91 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TestingKotlinAppTheme {
-                TaskCompletedScreen()
+                // A surface container using the 'background' color from the theme
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    createLayout()
+                }
             }
         }
     }
 }
 
 @Composable
-fun CreateUI1(modifier: Modifier = Modifier) {
-    Column {
-        Image(painter = painterResource(id = R.drawable.bg_compose_background),
-            contentDescription = null)
-        Text(text = stringResource(R.string.headline), fontSize = 24.sp, modifier = Modifier.padding(16.dp))
-        Text(
-            text = stringResource(R.string.subtext),
-            modifier = Modifier
-                .padding(16.dp,0.dp,16.dp,0.dp),
-            textAlign = TextAlign.Justify
-        )
-        Text(text = stringResource(R.string.description),
+fun card(headline: String, subText: String, color: Color,modifier: Modifier=Modifier) {
 
-            modifier = Modifier
-                .padding(16.dp),
-            textAlign = TextAlign.Justify)
-    }
-}
-@Composable
-fun TaskCompletedScreen() {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+        modifier = modifier
+
+            .fillMaxSize()
+            .background(color = color)
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val image = painterResource(R.drawable.ic_task_completed)
-        Image(painter = image, contentDescription = null)
+
         Text(
-            text = stringResource(R.string.all_tasks_completed),
-            modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
-            fontWeight = FontWeight.Bold
+            text = headline,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp)
         )
-        Text(
-            text = stringResource(R.string.nice_work),
-            fontSize = 16.sp
-        )
+        Text(text = subText, textAlign = TextAlign.Justify)
+
     }
 }
-@Preview(showBackground = true)
+
+@Composable
+fun createLayout() {
+    Column(Modifier.fillMaxWidth()) {
+        Row(Modifier.weight(1f)) {
+            card(
+                headline = "Text composable",
+                subText = "Displays text and follows the recommended Material Design guidelines.",
+                color = Color(0xFFEADDFF),
+                modifier = Modifier.weight(1f)
+            )
+            card(
+                headline = "Image composable",
+                subText = "Creates a composable that lays out and draws a given Painter class object.",
+                color = Color(0xFFD0BCFF),
+                modifier = Modifier.weight(1f)
+
+            )
+        }
+        Row(Modifier.weight(1f)) {
+            card(
+                headline = "Row composable",
+                subText = "A layout composable that places its children in a horizontal sequence.",
+                color = Color(0xFFB69DF8),
+                modifier = Modifier.weight(1f)
+
+            )
+            card(
+                headline = "Column composable",
+                subText = "A layout composable that places its children in a vertical sequence.",
+                color = Color(0xFFF6EDFF),
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Preview
 @Composable
 fun GreetingPreview() {
     TestingKotlinAppTheme {
-        TaskCompletedScreen()
+
+
     }
 }
+/*
+"Text composable"
+"Displays text and follows the recommended Material Design guidelines.
+"Image composable"
+"Creates a composable that lays out and draws a given Painter class object.
+"Row composable"
+"A layout composable that places its children in a horizontal sequence."
+"Column composable"
+"A layout composable that places its children in a vertical sequence."*/
